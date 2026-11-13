@@ -43,7 +43,7 @@ const NewServerView = () => {
 		setValue,
 		setError,
 		clearErrors
-	} = useForm({ mode: 'onChange', defaultValues: { workspaceUrl: '' } });
+	} = useForm({ mode: 'onChange', defaultValues: { workspaceUrl: 'https://chat.vinu.com.tr' } });
 
 	const workspaceUrl = useWatch({ control, name: 'workspaceUrl' });
 	const [showBottomInfo, setShowBottomInfo] = useState<boolean>(true);

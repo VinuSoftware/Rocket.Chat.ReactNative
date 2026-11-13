@@ -35,7 +35,7 @@ platform :android do
   desc "Upload App to Play Store Internal"
   lane :beta do
     upload_to_play_store(
-      package_name: 'chat.rocket.android',
+      package_name: 'com.vinu.chat',
       track: 'internal',
       aab: 'app/build/outputs/bundle/release/app-release.aab',
       skip_upload_metadata: true,
@@ -48,7 +48,7 @@ platform :android do
   desc "Upload App to Internal App Sharing"
   lane :internal_app_sharing do
     upload_to_play_store_internal_app_sharing(
-      package_name: 'chat.rocket.android',
+      package_name: 'com.vinu.chat',
       aab: 'app/build/outputs/bundle/release/app-release.aab'
     )
   end
@@ -56,7 +56,7 @@ platform :android do
   desc "Upload App to Play Store Open Testing"
   lane :open_testing do
     upload_to_play_store(
-      package_name: 'chat.rocket.android',
+      package_name: 'com.vinu.chat',
       track: 'beta',
       aab: 'app/build/outputs/bundle/release/app-release.aab',
       skip_upload_metadata: true,

@@ -11,7 +11,7 @@
 		"format-lint": "oxfmt && pnpm lint",
 		"ios": "react-native run-ios",
 		"pod-install": "bundle exec pod install --project-directory=ios",
-		"android": "react-native run-android --appId=chat.rocket.android",
+		"android": "react-native run-android --appId=com.vinu.chat",
 		"android-whitelabel": "react-native run-android --appId",
 		"log-android": "react-native log-android",
 		"snyk-protect": "snyk protect",

@@ -1,36 +1,65 @@
-# Rocket.Chat Mobile
+# Vinu Chat — proje notları
 
-- **Supported server versions:** 0.70.0+
-- **Supported iOS versions**: 16.4+
-- **Supported Android versions**: 7.0+
+Bu dosya, bu depodaki Vinu Chat değişikliklerini ve dağıtım öncesi saklanması gereken bilgileri özetler. Gizli anahtarların, parolaların veya sertifika içeriklerinin kendisini depoya yazmayın.
 
-## Download
+## Mevcut yapılandırma
 
-<a href="https://play.google.com/store/apps/details?id=chat.rocket.android">
-  <img alt="Download on Google Play" src="https://play.google.com/intl/en_us/badges/images/badge_new.png" height=43>
-</a>
-<a href="https://apps.apple.com/us/app/rocket-chat/id1148741252">
-  <img alt="Download on App Store" src="https://user-images.githubusercontent.com/7317008/43209852-4ca39622-904b-11e8-8ce1-cdc3aee76ae9.png" height=43>
-</a>
+| Alan | Değer / dosya |
+|---|---|
+| Uygulama adı | Vinu Chat |
+| Rocket.Chat adresi | `https://chat.vinu.com.tr` |
+| Android application ID | `com.vinu.chat` |
+| Android Firebase projesi | `vinu-rocketchat` |
+| Android Firebase dosyası | `android/app/google-services.json` |
+| Android ilk versionCode | `1` |
+| iOS ana uygulama bundle ID | `com.vinu.rocketchat` |
+| iOS Firebase projesi | `vinu-rocketchat` |
+| iOS Firebase dosyası | `ios/GoogleService-Info.plist` |
+| iOS Share Extension | `com.vinu.rocketchat.ShareExtension` |
+| iOS Notification Service | `com.vinu.rocketchat.NotificationService` |
+| iOS App Group | `group.com.vinu.rocketchat` |
 
-Check [our docs](https://developer.rocket.chat/docs/mobile-app) for beta versions.
+## Neler değiştirildi
 
-## Reporting an Issue
+- Android uygulama adı Vinu Chat yapıldı; Android kimliği `com.vinu.chat` olarak ayarlandı.
+- Android Firebase yapılandırması Vinu'nun `vinu-rocketchat` projesine bağlandı.
+- Android Fastlane paket kimliği Vinu uygulama kimliğine uyarlandı.
+- Android `sharedUserId` kaldırıldı.
+- İlk açılıştaki sunucu adresi `https://chat.vinu.com.tr` olarak dolduruluyor. Kullanıcı yine başka sunucu adresi girebilir.
+- iOS ana uygulama, Share Extension ve Notification Service bundle ID'leri Vinu için ayarlandı.
+- iOS App Group ve Keychain grup adları Vinu kimlikleriyle eşleştirildi.
+- iOS Firebase yapılandırması Vinu'nun `vinu-rocketchat` projesine bağlandı.
+- Apple hesabının provisioning profile'ında bulunmadığı için Communication Notifications entitlement'ı iki entitlement dosyasından çıkarıldı. Standart push bildirimleri için bu özel capability gerekli değildir.
+- Xcode proje dosyasında Watch uygulaması hedefi kaldırılmış görünüyor; Vinu için Watch uygulaması planlanmadığından amaçla uyumlu.
 
-[Github Issues](https://github.com/RocketChat/Rocket.Chat.ReactNative/issues) are used to track todos, bugs, feature requests, and more.
 
-Also check the [#react-native](https://open.rocket.chat/channel/react-native) community on [open.rocket.chat](https://open.rocket.chat). We'd like to help.
+## Firebase dosyaları
 
-## Contributing
+Uygulama derlemesi bu iki dosyayı bekler; Firebase'i kullandığımız sürece **yerlerini değiştirmeyin veya silmeyin**: (içeriği bitwarden'a kayıtlı)
 
-Are you a dev and would like to help? Found a bug that you would like to report or a missing feature that you would like to work on? Great! We have written down a [Contribution guide](https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/CONTRIBUTING.md) so you can start easily.
+- `android/app/google-services.json`
+- `ios/GoogleService-Info.plist`
 
-## Whitelabel
-Do you want to make the app run on your own server only? [Follow our whitelabel documentation.](https://developer.rocket.chat/mobile-app-white-labelling)
 
-## Engage with us
-### Share your story
-We’d love to hear about [your experience](https://survey.zohopublic.com/zs/e4BUFG) and potentially feature it on our [blog](https://www.rocket.chat/blog?utm_source=github&utm_medium=readme&utm_campaign=community).
+Bu Firebase istemci dosyaları uygulamada bulunur ve tek başlarına Firebase Admin/service-account anahtarı değildir. Firebase servis hesabı JSON'u, APNs özel anahtarı/sertifikası ve imzalama parolaları gizli tutulmalıdır. Bu depoya veya uygulama paketine koymayın.
 
-### Subscribe for Updates
-Once a month our marketing team releases an email update with news about product releases, company related topics, events and use cases. [Sign up!](https://rocket.chat/newsletter/?utm_source=github&utm_medium=readme&utm_campaign=community)
+
+## Bitwarden'da saklanacaklar
+
+Bitwarden'da bir **Vinu Chat — mobil yayın** koleksiyonu veya güvenli kaydı oluşturun. Parolaları ve anahtar dosyalarını depo dosyalarına, README'ye, e-postaya ya da sohbet mesajına koymayın.
+
+1. **Android Play upload anahtarı**: `vinu-upload.jks` dosyasının kendisi, alias (`vinu-upload` olarak belirlenmiş), keystore parolası, key parolası ve oluşturulma tarihi. Şifreli dosya eki olarak saklayın ve ayrı güvenli bir yedek tutun. Kaybolursa uygulama güncellemesi yayımlamak zorlaşabilir.
+2. **Firebase sunucu servis hesabı**: `vinu-rocketchat` için FCM gönderme yetkili servis hesabı JSON dosyası (özellikle private key), hangi Rocket.Chat sunucusunda kullanıldığı ve oluşturulma/yenileme tarihi. Bu dosya mobil uygulama Firebase dosyalarından farklıdır; Rocket.Chat sunucusuna girilir.
+3. **APNs üretim kimlik bilgisi**: Rocket.Chat'e yüklenen APNs üretim sertifikasının özel anahtarla birlikte dışa aktarılmış `.p12` dosyası ve export parolası; varsa Key ID, Team ID, konu olan bundle ID ve sertifika bitiş tarihi. Sertifika yerine APNs `.p8` anahtarı kullanıldıysa `.p8` içeriğini, Key ID ve Team ID'yi saklayın. Kullanılmayan alanları boş bırakın.
+4. **Apple imzalama yedeği**: dağıtım sertifikası ve özel anahtarı dışa aktarılmış `.p12` dosyası ile parolası; Apple Developer Team ID ve App Store Connect erişim sahibinin bilgisi. Xcode otomatik imza kullanıyorsa ayrıca profile dosyası saklamak şart olmayabilir.
+5. **Play Console yükleme otomasyonu** (Fastlane kullanılacaksa): Play Console service-account JSON dosyası ve bağlı Google hesabı/izin açıklaması. Bu, Firebase servis hesabından farklıdır.
+
+Firebase `google-services.json` ve `GoogleService-Info.plist` içindeki uygulama yapılandırma değerlerini Bitwarden'da not olarak tutabilirsiniz; bunlar Admin SDK private key yerine geçmez. Firebase API anahtarlarına uygun API kısıtlamalarını da Google Cloud Console'da uygulayın.
+
+## Bildirim sunucusu notu
+
+- Rocket.Chat sunucu Push ayarlarına APNs üretim kimlik bilgileri ve `vinu-rocketchat` Firebase servis hesabı girilir. Firebase servis hesabı JSON'u uygulamaya eklenmez.
+- Kendi APNs/FCM kimlik bilgilerinizle gönderim için Rocket.Chat Push ayarındaki **Ağ geçidi etkin** seçeneği kapalı olmalıdır. Ekrandaki sunucu kaydı/gizlilik uyarısı Rocket.Chat ağ geçidinin çalışmasıyla ilgilidir; kendi anahtarlarınızın girilmesine dair bir başarı göstergesi değildir.
+- Anahtar kapatılamıyorsa sunucu yöneticisi Rocket.Chat dağıtımındaki ayar kilidini/üzerine yazmayı kontrol etmelidir. Sunucu kapatılıp açılınca ayarın kalıcı olarak kapalı olduğunu doğrulayın.
+- APNs ve FCM kimlik bilgileri girildikten sonra sunucunun yeniden başlatılması gerekebilir. Mevcut Rocket.Chat mobil uygulamalarını kullanan kişiler de etkilenebileceğinden geçişi koordineli yapın.
+
